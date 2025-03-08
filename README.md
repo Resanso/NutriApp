@@ -1,8 +1,7 @@
 # Nutri App
 
-![Screenshot 1](login.jpg) | ![Screenshot 2](images/regist.jpg) | ![Screenshot 3](images/screenshot3.jpg)
----|---|---
-![Screenshot 4](images/screenshot4.jpg) | ![Screenshot 5](images/screenshot5.jpg) | ![Screenshot 6](images/screenshot6.jpg)
+![Screenshot 1](login.jpg) | ![Screenshot 2](regist.jpg) | ![Screenshot 3](homepagenutriapp.jpg) | ![Screenshot 4](goals.jpg) | ![Screenshot 5](history.jpg) | ![Screenshot 6](editEntry.jpg)
+---|---|---|---|---|---
 
 Aplikasi Flutter untuk melacak asupan nutrisi harian dengan fitur pencatatan makanan, perhitungan gizi, dan pemantauan target kesehatan.
 
@@ -88,5 +87,3 @@ lib/
 │   └── repositories/
 └── widgets/
 ```
-
-Dikembangkan dengan ❤️ oleh [Nama Anda] | [2024] | [Kontak Email]
