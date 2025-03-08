@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_types_as_parameter_names, unnecessary_overrides, avoid_print, invalid_use_of_protected_member
 
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,6 +32,8 @@ class HomeController extends GetxController {
     super.onInit();
     // Delay the fetch to avoid build phase issues
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      clearTodayFoodItems(); // Clear foods when initializing
+      setupMidnightReset(); // Setup automatic reset
       fetchUserHistory();
       fetchUserGoals();
       calculateTodayProgress();
@@ -595,5 +599,26 @@ class HomeController extends GetxController {
   void _handleError(dynamic e) {
     print('Error calculating goals: $e');
     Get.snackbar('Error', 'Failed to calculate goals');
+  }
+
+  void setupMidnightReset() {
+    // Get time until next midnight
+    final now = DateTime.now();
+    final tomorrow = DateTime(now.year, now.month, now.day + 1);
+    final timeUntilMidnight = tomorrow.difference(now);
+
+    // Schedule first reset
+    Future.delayed(timeUntilMidnight, () {
+      clearTodayFoodItems();
+      // Setup next day's reset
+      Timer.periodic(const Duration(days: 1), (timer) {
+        clearTodayFoodItems();
+      });
+    });
+  }
+
+  void clearTodayFoodItems() {
+    foodItems.clear();
+    calculateTodayProgress();
   }
 }
