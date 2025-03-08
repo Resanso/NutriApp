@@ -5,6 +5,9 @@
 
 Aplikasi untuk melacak asupan nutrisi harian dengan fitur pencatatan makanan, perhitungan gizi, dan pemantauan target kesehatan.
 
+## Link video demo singkat
+https://youtube.com/shorts/VjX0TZiR7vE?si=U1x53cmQV0VEeXF1
+
 ## Deskripsi
 
 Nutri App membantu pengguna untuk:
