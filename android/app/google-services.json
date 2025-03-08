@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "544357925607",
+    "project_id": "macromate-55971",
+    "storage_bucket": "macromate-55971.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544357925607:android:4085ae1bce73cd0ed69842",
+        "android_client_info": {
+          "package_name": "com.macromate.macro_mate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp9NNTlIRwWcpfEK8Xy51hT2nh0YCkLxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544357925607:android:ef10da4184fd696bd69842",
+        "android_client_info": {
+          "package_name": "com.nutri.nutri_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp9NNTlIRwWcpfEK8Xy51hT2nh0YCkLxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544357925607:android:caafa9f48fa77da7d69842",
+        "android_client_info": {
+          "package_name": "com.nutrimate.nutri_mate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp9NNTlIRwWcpfEK8Xy51hT2nh0YCkLxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
