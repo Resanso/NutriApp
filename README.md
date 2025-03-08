@@ -3,7 +3,7 @@
 ![Screenshot 1](login.jpg) | ![Screenshot 2](regist.jpg) | ![Screenshot 3](homepagenutriapp.jpg) | ![Screenshot 4](goals.jpg) | ![Screenshot 5](history.jpg) | ![Screenshot 6](editEntry.jpg)
 ---|---|---|---|---|---
 
-Aplikasi Flutter untuk melacak asupan nutrisi harian dengan fitur pencatatan makanan, perhitungan gizi, dan pemantauan target kesehatan.
+Aplikasi untuk melacak asupan nutrisi harian dengan fitur pencatatan makanan, perhitungan gizi, dan pemantauan target kesehatan.
 
 ## Deskripsi
 
