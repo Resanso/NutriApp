@@ -14,7 +14,7 @@ Nutri App membantu pengguna untuk:
 - 📝 Mencatat makanan yang dikonsumsi setiap hari
 - 🧮 Menghitung nilai gizi secara otomatis
 - 📈 Memantau kemajuan nutrisi dengan visualisasi grafis
-- 🎯 Menetapkan target personal berdasarkan profil pengguna
+- 🎯 Menetapkan target personal berdasarkan kuisioner yang di isi pengguna
 - 📅 Menyimpan riwayat nutrisi lengkap
 
 ## Fitur Utama
