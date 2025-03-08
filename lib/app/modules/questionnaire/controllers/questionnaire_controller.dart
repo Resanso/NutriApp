@@ -43,7 +43,9 @@ class QuestionnaireController extends GetxController {
 
       double calories = bmr * activityMultiplier;
 
-      // Adjust calories based on goal
+      // Menyesuaikan kalori berdasarkan tujuan
+      // - Untuk menurunkan berat badan: kurangi 500 kalori
+      // - Untuk menaikkan berat badan: tambah 500 kalori
       switch (goal.value) {
         case 'lose':
           calories -= 500;
@@ -53,11 +55,15 @@ class QuestionnaireController extends GetxController {
           break;
       }
 
+      // Membuat objek goals dengan perhitungan:
+      // - Protein: 2 gram per kg berat badan
+      // - Karbohidrat: 45% dari total kalori (dibagi 4 karena 1g karbo = 4 kalori)
+      // - Lemak: 25% dari total kalori (dibagi 9 karena 1g lemak = 9 kalori)
       final goals = UserGoals(
         caloriesGoal: calories,
-        proteinGoal: weight.value * 2.0, // 2g per kg
-        carbsGoal: (calories * 0.45) / 4, // 45% of calories
-        fatGoal: (calories * 0.25) / 9, // 25% of calories
+        proteinGoal: weight.value * 2.0, // 2g per kg berat badan
+        carbsGoal: (calories * 0.45) / 4, // 45% dari total kalori
+        fatGoal: (calories * 0.25) / 9, // 25% dari total kalori
         lastUpdated: DateTime.now(),
       );
 

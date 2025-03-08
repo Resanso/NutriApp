@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// ignore_for_file: use_super_parameters
 
+import 'package:flutter/material.dart';
+
+// Widget form kuesioner untuk mengumpulkan data pengguna
 class QuestionnaireForm extends StatefulWidget {
+  // Callback function yang akan dipanggil saat form di-submit
   final Function(Map<String, dynamic>) onSubmit;
 
   const QuestionnaireForm({Key? key, required this.onSubmit}) : super(key: key);
@@ -11,14 +14,17 @@ class QuestionnaireForm extends StatefulWidget {
 }
 
 class _QuestionnaireFormState extends State<QuestionnaireForm> {
+  // Key untuk validasi form
   final _formKey = GlobalKey<FormState>();
+
+  // Data yang akan disimpan dari form
   final Map<String, dynamic> _formData = {
-    'age': 0,
-    'weight': 0.0,
-    'height': 0.0,
-    'gender': 'male',
-    'activityLevel': 'sedentary',
-    'goal': 'maintain',
+    'age': 0, // Umur dalam tahun
+    'weight': 0.0, // Berat badan dalam kg
+    'height': 0.0, // Tinggi badan dalam cm
+    'gender': 'male', // Jenis kelamin
+    'activityLevel': 'sedentary', // Tingkat aktivitas fisik
+    'goal': 'maintain', // Target yang ingin dicapai
   };
 
   @override
@@ -27,24 +33,31 @@ class _QuestionnaireFormState extends State<QuestionnaireForm> {
       key: _formKey,
       child: Column(
         children: [
+          // Input field untuk umur
           TextFormField(
             decoration: const InputDecoration(labelText: 'Age (years)'),
             keyboardType: TextInputType.number,
             validator: (v) => v!.isEmpty ? 'Required' : null,
             onSaved: (v) => _formData['age'] = int.parse(v!),
           ),
+
+          // Input field untuk berat badan
           TextFormField(
             decoration: const InputDecoration(labelText: 'Weight (kg)'),
             keyboardType: TextInputType.number,
             validator: (v) => v!.isEmpty ? 'Required' : null,
             onSaved: (v) => _formData['weight'] = double.parse(v!),
           ),
+
+          // Input field untuk tinggi badan
           TextFormField(
             decoration: const InputDecoration(labelText: 'Height (cm)'),
             keyboardType: TextInputType.number,
             validator: (v) => v!.isEmpty ? 'Required' : null,
             onSaved: (v) => _formData['height'] = double.parse(v!),
           ),
+
+          // Dropdown untuk memilih jenis kelamin
           DropdownButtonFormField<String>(
             value: _formData['gender'],
             decoration: const InputDecoration(labelText: 'Gender'),
@@ -54,6 +67,8 @@ class _QuestionnaireFormState extends State<QuestionnaireForm> {
             ],
             onChanged: (v) => setState(() => _formData['gender'] = v),
           ),
+
+          // Dropdown untuk memilih tingkat aktivitas
           DropdownButtonFormField<String>(
             value: _formData['activityLevel'],
             decoration: const InputDecoration(labelText: 'Activity Level'),
@@ -68,6 +83,8 @@ class _QuestionnaireFormState extends State<QuestionnaireForm> {
             ],
             onChanged: (v) => setState(() => _formData['activityLevel'] = v),
           ),
+
+          // Dropdown untuk memilih target
           DropdownButtonFormField<String>(
             value: _formData['goal'],
             decoration: const InputDecoration(labelText: 'Goal'),
@@ -82,11 +99,14 @@ class _QuestionnaireFormState extends State<QuestionnaireForm> {
             onChanged: (v) => setState(() => _formData['goal'] = v),
           ),
           const SizedBox(height: 20),
+
+          // Tombol untuk menghitung hasil
           ElevatedButton(
             onPressed: () {
+              // Validasi form sebelum menyimpan data
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                widget.onSubmit(_formData);
+                widget.onSubmit(_formData); // Kirim data ke parent widget
               }
             },
             child: const Text('Calculate Daily Goals'),

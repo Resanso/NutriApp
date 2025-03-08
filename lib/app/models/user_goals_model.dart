@@ -1,10 +1,23 @@
+/// Model untuk menyimpan target nutrisi harian pengguna
+// ignore_for_file: avoid_print, dangling_library_doc_comments
+
 class UserGoals {
+  /// Target kalori harian dalam satuan kkal
   final double caloriesGoal;
+
+  /// Target protein harian dalam satuan gram
   final double proteinGoal;
+
+  /// Target karbohidrat harian dalam satuan gram
   final double carbsGoal;
+
+  /// Target lemak harian dalam satuan gram
   final double fatGoal;
+
+  /// Waktu terakhir data diperbarui
   final DateTime lastUpdated;
 
+  /// Constructor untuk membuat objek UserGoals
   UserGoals({
     required this.caloriesGoal,
     required this.proteinGoal,
@@ -13,6 +26,7 @@ class UserGoals {
     required this.lastUpdated,
   });
 
+  /// Mengkonversi objek UserGoals menjadi Map untuk penyimpanan data
   Map<String, dynamic> toJson() => {
     'caloriesGoal': caloriesGoal,
     'proteinGoal': proteinGoal,
@@ -21,6 +35,9 @@ class UserGoals {
     'last_updated': lastUpdated.toIso8601String(),
   };
 
+  /// Membuat objek UserGoals dari data Map yang tersimpan
+  /// Menangani kasus dimana data mungkin dalam format integer atau double
+  /// Jika terjadi error, mengembalikan objek default dengan nilai 0
   factory UserGoals.fromJson(Map<String, dynamic> json) {
     try {
       final caloriesGoal =

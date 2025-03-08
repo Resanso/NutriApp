@@ -1,3 +1,7 @@
+/// Model untuk menyimpan informasi item makanan
+/// Berisi detail nutrisi seperti kalori, protein, karbohidrat, dan lemak
+// ignore_for_file: avoid_print, dangling_library_doc_comments
+
 class FoodItem {
   final String name;
   final double quantity;
@@ -17,6 +21,7 @@ class FoodItem {
     required this.fat,
   });
 
+  /// Mengubah object FoodItem menjadi Map untuk keperluan penyimpanan data
   Map<String, dynamic> toJson() => {
     'name': name,
     'quantity': quantity,
@@ -27,6 +32,9 @@ class FoodItem {
     'fat': fat,
   };
 
+  /// Membuat object FoodItem dari data Map
+  /// [json] adalah Map yang berisi data makanan
+  /// Return object FoodItem dengan nilai default jika data tidak tersedia
   factory FoodItem.fromJson(Map<String, dynamic> json) {
     return FoodItem(
       name: json['name'] ?? '',
@@ -40,6 +48,8 @@ class FoodItem {
   }
 }
 
+/// Model untuk menyimpan catatan makanan harian pengguna
+/// Berisi daftar makanan yang dikonsumsi dan total kalori dalam satu hari
 class DailyEntry {
   final String userId;
   final DateTime date;
@@ -53,6 +63,7 @@ class DailyEntry {
     required this.totalCalories,
   });
 
+  /// Mengubah object DailyEntry menjadi Map untuk keperluan penyimpanan data
   Map<String, dynamic> toJson() => {
     'user_id': userId,
     'date': date.toIso8601String(),
@@ -60,6 +71,9 @@ class DailyEntry {
     'total_calories': totalCalories,
   };
 
+  /// Membuat object DailyEntry dari data Map
+  /// [json] adalah Map yang berisi data catatan harian
+  /// Return object DailyEntry kosong jika terjadi kesalahan parsing data
   factory DailyEntry.fromJson(Map<String, dynamic> json) {
     try {
       return DailyEntry(

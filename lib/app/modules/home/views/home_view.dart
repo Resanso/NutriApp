@@ -1,13 +1,13 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutri_app/app/models/nutrition_entry_model.dart';
-import 'package:nutri_app/app/widgets/questionnaire_form.dart';
 import '../controllers/home_controller.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../widgets/radial_progress.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/text_styles.dart';
-import '../../../widgets/nutrition_legend.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -15,8 +15,13 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final authC = Get.find<AuthController>();
+    // Membangun tampilan utama aplikasi
     return Scaffold(
+      // Mengatur warna latar belakang menjadi abu-abu muda
       backgroundColor: Colors.grey[50],
+
+      // Tombol floating untuk menambah makanan baru
+      // Ketika ditekan akan menampilkan bottom sheet input makanan
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showAddFoodBottomSheet(context);
@@ -24,11 +29,16 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: const Color(0xFF8BC34A),
         child: const Icon(Icons.add, color: Colors.white),
       ),
+
+      // Membangun app bar dengan fungsi terpisah
       appBar: _buildAppBar(authC),
+
+      // Konten utama dengan scroll vertikal
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Widget untuk menampilkan progress nutrisi dalam bentuk diagram
             _buildProgressCard(),
             _buildSectionTitle('Recent Foods'),
             _buildTodayEntries(),
@@ -308,9 +318,7 @@ class HomeView extends GetView<HomeController> {
                       child: const Icon(Icons.delete, color: Colors.white),
                     ),
                     direction: DismissDirection.endToStart,
-                    onDismissed: (_) {
-                      // TODO: Implement delete functionality
-                    },
+                    onDismissed: (_) {},
                     child: Card(
                       elevation: 0,
                       margin: const EdgeInsets.only(bottom: 8),

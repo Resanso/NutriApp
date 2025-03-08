@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 
+/// Widget untuk menampilkan legenda nutrisi yang terdiri dari label dan indikator warna
+///
+/// Widget ini menampilkan sebuah container dengan latar belakang transparan,
+/// sebuah titik warna sebagai indikator, dan label teks di sebelahnya
 class NutritionLegend extends StatelessWidget {
+  /// Teks yang akan ditampilkan sebagai label legenda
   final String label;
+
+  /// Warna yang digunakan untuk indikator dan tema legenda
   final Color color;
 
+  /// Membuat instance baru dari NutritionLegend
+  ///
+  /// Parameter [label] dan [color] wajib diisi (required)
   const NutritionLegend({super.key, required this.label, required this.color});
 
   @override

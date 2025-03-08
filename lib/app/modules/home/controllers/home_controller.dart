@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_types_as_parameter_names, unnecessary_overrides, avoid_print, invalid_use_of_protected_member
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,10 +10,12 @@ import '../../../models/nutrition_entry_model.dart';
 import '../../../controllers/auth_controller.dart';
 
 class HomeController extends GetxController {
+  final NutritionService nutritionService;
   final foodInputController = TextEditingController();
-  final nutritionService = NutritionService();
   final AuthController authC = Get.find();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  HomeController({required this.nutritionService});
 
   var isLoading = false.obs;
   var foodItems = <FoodItem>[].obs;
@@ -487,83 +491,109 @@ class HomeController extends GetxController {
 
   Future<void> calculateAndSaveGoals(Map<String, dynamic> formData) async {
     try {
-      // Calculate BMR using Mifflin-St Jeor Equation
-      double bmr;
-      if (formData['gender'] == 'male') {
-        bmr =
-            (10 * formData['weight']) +
-            (6.25 * formData['height']) -
-            (5 * formData['age']) +
-            5;
-      } else {
-        bmr =
-            (10 * formData['weight']) +
-            (6.25 * formData['height']) -
-            (5 * formData['age']) -
-            161;
-      }
-
-      // Apply activity multiplier
-      double tdee;
-      switch (formData['activityLevel']) {
-        case 'sedentary':
-          tdee = bmr * 1.2;
-          break;
-        case 'light':
-          tdee = bmr * 1.375;
-          break;
-        case 'moderate':
-          tdee = bmr * 1.55;
-          break;
-        case 'active':
-          tdee = bmr * 1.725;
-          break;
-        default:
-          tdee = bmr * 1.2;
-      }
-
-      // Adjust calories based on goal
-      double targetCalories;
-      switch (formData['goal']) {
-        case 'lose':
-          targetCalories = tdee - 500;
-          break;
-        case 'gain':
-          targetCalories = tdee + 500;
-          break;
-        default:
-          targetCalories = tdee;
-      }
-
-      // Ubah format goals sesuai dengan UserGoals model
-      final goals = UserGoals(
-        caloriesGoal: targetCalories,
-        proteinGoal: (targetCalories * 0.3) / 4, // 4 calories per gram
-        carbsGoal: (targetCalories * 0.4) / 4, // 4 calories per gram
-        fatGoal: (targetCalories * 0.3) / 9, // 9 calories per gram
-        lastUpdated: DateTime.now(),
-      );
-
-      // Save to Firestore
-      await _db
-          .collection('users')
-          .doc(authC.currentUser.value.id)
-          .collection('goals')
-          .doc('current')
-          .set(goals.toJson());
-
-      await fetchUserGoals();
-      calculateTodayProgress();
-
-      // Tambahkan snackbar sukses
-      Get.snackbar(
-        'Success',
-        'Goals updated successfully',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      final goals = _calculateNutritionGoals(formData);
+      await _saveGoalsToFirestore(goals);
+      await _refreshGoalsAndProgress();
+      _showSuccessMessage();
     } catch (e) {
-      print('Error calculating goals: $e');
-      Get.snackbar('Error', 'Failed to calculate goals');
+      _handleError(e);
     }
+  }
+
+  /// Menghitung target nutrisi berdasarkan data form pengguna
+  /// [formData] berisi data seperti berat, tinggi, umur, gender, level aktivitas, dan goal
+  /// Return object UserGoals yang berisi target kalori, protein, karbohidrat, dan lemak
+  UserGoals _calculateNutritionGoals(Map<String, dynamic> formData) {
+    final bmr = _calculateBMR(formData);
+    final tdee = _calculateTDEE(bmr, formData['activityLevel']);
+    final targetCalories = _adjustCaloriesForGoal(tdee, formData['goal']);
+
+    return UserGoals(
+      caloriesGoal: targetCalories,
+      // Protein: 30% dari total kalori, dibagi 4 karena 1g protein = 4 kalori
+      proteinGoal: (targetCalories * 0.3) / 4,
+      // Karbohidrat: 40% dari total kalori, dibagi 4 karena 1g karbo = 4 kalori
+      carbsGoal: (targetCalories * 0.4) / 4,
+      // Lemak: 30% dari total kalori, dibagi 9 karena 1g lemak = 9 kalori
+      fatGoal: (targetCalories * 0.3) / 9,
+      lastUpdated: DateTime.now(),
+    );
+  }
+
+  /// Menghitung BMR (Basal Metabolic Rate) menggunakan formula Mifflin-St Jeor
+  /// BMR adalah jumlah kalori yang dibakar tubuh saat istirahat
+  /// [formData] berisi gender, berat (kg), tinggi (cm), dan umur (tahun)
+  double _calculateBMR(Map<String, dynamic> formData) {
+    if (formData['gender'] == 'male') {
+      return (10 * formData['weight']) + // Faktor berat badan
+          (6.25 * formData['height']) + // Faktor tinggi badan
+          (5 * formData['age']) + // Faktor umur
+          5; // Konstanta untuk pria
+    } else {
+      return (10 * formData['weight']) +
+          (6.25 * formData['height']) -
+          (5 * formData['age']) -
+          161; // Konstanta untuk wanita
+    }
+  }
+
+  /// Menghitung TDEE (Total Daily Energy Expenditure)
+  /// TDEE adalah total kalori yang dibakar dalam sehari termasuk aktivitas
+  /// [bmr] adalah nilai BMR yang sudah dihitung
+  /// [activityLevel] adalah level aktivitas fisik pengguna
+  double _calculateTDEE(double bmr, String activityLevel) {
+    switch (activityLevel) {
+      case 'sedentary': // Sangat jarang olahraga
+        return bmr * 1.2;
+      case 'light': // Olahraga ringan 1-3x seminggu
+        return bmr * 1.375;
+      case 'moderate': // Olahraga sedang 3-5x seminggu
+        return bmr * 1.55;
+      case 'active': // Olahraga berat 6-7x seminggu
+        return bmr * 1.725;
+      default:
+        return bmr * 1.2;
+    }
+  }
+
+  /// Menyesuaikan target kalori berdasarkan tujuan pengguna
+  /// [tdee] adalah nilai TDEE yang sudah dihitung
+  /// [goal] adalah tujuan pengguna (turun/naik/maintain berat badan)
+  double _adjustCaloriesForGoal(double tdee, String goal) {
+    switch (goal) {
+      case 'lose': // Turun berat badan: kurangi 500 kalori
+        return tdee - 500;
+      case 'gain': // Naik berat badan: tambah 500 kalori
+        return tdee + 500;
+      default: // Maintain berat badan: TDEE tetap
+        return tdee;
+    }
+  }
+
+  Future<void> _saveGoalsToFirestore(UserGoals goals) async {
+    await _db
+        .collection('users')
+        .doc(authC.currentUser.value.id)
+        .collection('goals')
+        .doc('current')
+        .set(goals.toJson());
+  }
+
+  Future<void> _refreshGoalsAndProgress() async {
+    await fetchUserGoals();
+    calculateTodayProgress();
+  }
+
+  void _showSuccessMessage() {
+    Get.snackbar(
+      'Success',
+      'Goals updated successfully',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+
+  void _handleError(dynamic e) {
+    print('Error calculating goals: $e');
+    Get.snackbar('Error', 'Failed to calculate goals');
   }
 }

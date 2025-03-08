@@ -26,6 +26,15 @@ class AuthController extends GetxController {
     });
   }
 
+  /// Method untuk melakukan login user
+  /// [email] - Email yang digunakan untuk login
+  /// [password] - Password yang digunakan untuk login
+  ///
+  /// Method ini akan:
+  /// 1. Mencoba login menggunakan Firebase Auth
+  /// 2. Jika berhasil, update data currentUser
+  /// 3. Redirect ke halaman home
+  /// 4. Jika gagal, tampilkan pesan error
   Future<void> login(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
@@ -42,6 +51,16 @@ class AuthController extends GetxController {
     }
   }
 
+  /// Method untuk mendaftarkan user baru
+  /// [email] - Email yang akan didaftarkan
+  /// [password] - Password untuk akun baru
+  /// [name] - Nama user yang mendaftar
+  ///
+  /// Method ini akan:
+  /// 1. Mencoba membuat akun baru di Firebase Auth
+  /// 2. Jika berhasil, update data currentUser dengan info yang baru
+  /// 3. Redirect ke halaman home
+  /// 4. Jika gagal, tampilkan pesan error
   Future<void> register(String email, String password, String name) async {
     try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
