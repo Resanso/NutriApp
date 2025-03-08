@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/login_controller.dart';
+import '../../../routes/app_pages.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class LoginView extends GetView<LoginController> {
               child: const Text("Login"),
             ),
             TextButton(
-              onPressed: () => Get.toNamed('/register'),
+              onPressed: () => Get.toNamed(Routes.REGISTER),
               child: const Text("Register"),
             ),
           ],
